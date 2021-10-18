@@ -1,10 +1,22 @@
+import uuid
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class File(models.Model):
+    def file_blob_destination(self, filename):
+        return f"storage/documents/{str(self.id)}"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=1000)
     revision = models.IntegerField()
-    file_guid = models.CharField(max_length=1000)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    blob = models.FileField(upload_to=file_blob_destination)
+
+    def save(self, *args, **kwargs):
+        self.name = self.blob.name
+        self.blob.name = str(self.id)
+        super(File, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
-    'file_manager',
-    'authentication'
+    'file_manager.apps.FileManagerConfig',
+    'authentication.apps.AuthenticationConfig'
 ]
 
 MIDDLEWARE = [
