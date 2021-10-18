@@ -4,29 +4,76 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+
+
+from .forms import UploadFileForm
 from .models import File
-from .serializers import FileSerializer
+from django.contrib.auth.models import User
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def files(request):
-    snippets = File.objects.all()
-    serializer = FileSerializer(snippets, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def file(request, name, revision):
+    if request.method == 'GET':
+        return retrieve_file(name, request, revision)
+    if request.method == 'POST':
+        return save_new_file(name, request, revision)
+    if request.method == 'PUT':
+        return update_file(name, request, revision)
+
+
+def update_file(name, request, revision):
+    form = UploadFileForm(request.POST, request.FILES)
+    if form.is_valid():
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        try:
+            file_record: File = File.objects.get(owner=request.user.id, name=name, revision=revision)
+        except File.DoesNotExist:
+            file_record = None
+        if file_record is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        file_record.blob = request.FILES.get('file_uploaded')
+        file_record.save()
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def save_new_file(name, request, revision):
+    form = UploadFileForm(request.POST, request.FILES)
+    if form.is_valid():
+        try:
+            user = User.objects.get(id=request.user.id)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            file_record: File = File.objects.get(owner=request.user.id, name=name, revision=revision)
+        except File.DoesNotExist:
+            file_record = None
+        if file_record is not None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance = File(
+            blob=request.FILES.get('file_uploaded'),
+            name=name,
+            revision=revision,
+            owner=user)
+        instance.save()
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def retrieve_file(name, request, revision):
     try:
         file_record: File = File.objects.get(owner=request.user.id, name=name, revision=revision)
     except File.DoesNotExist:
         file_record = None
-
     if file_record is None:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
     filename = file_record.id
     file_path = f"storage/documents/{filename}"
     file_pointer = open(file_path, "rb")
