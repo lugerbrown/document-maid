@@ -13,10 +13,7 @@ class File(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     blob = models.FileField(upload_to=file_blob_destination)
 
-    def save(self, *args, **kwargs):
-        self.name = self.blob.name
-        self.blob.name = str(self.id)
-        super(File, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.name
+
+
