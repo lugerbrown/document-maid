@@ -1,6 +1,6 @@
 # DocumentMaid
 
-[[TOC]]
+__TOC__
 
 Web app that Handles files storage and versioning, written in Django, Django-restFramework , and Aurelia 
 
