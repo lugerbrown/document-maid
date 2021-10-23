@@ -9,7 +9,7 @@ from .models import File
 from django.contrib.auth.models import User
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 @permission_classes([IsAuthenticated])
 def file(request, name, revision):
     if request.method == 'GET':
