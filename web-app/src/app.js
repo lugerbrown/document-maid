@@ -1,16 +1,10 @@
 import '../style/app.scss'
 export class App {
-    constructor() {
-      console.log('ctor called');
-      window.sessionStorage.setItem('token', 'something');;
+    constructor() {      
     }
-    activate(){
-      console.log('activate called');
-    }
-
-    configureRouter(config, router){
-    this.router = router;
-    config.title = "Home Page For Demo";
+    
+    configureRouter(config, router) {
+    this.router = router;    
     config.map([
       {
         route:['','login'], 
