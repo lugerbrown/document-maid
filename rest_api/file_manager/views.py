@@ -1,11 +1,9 @@
 from django.http import HttpResponse
 from rest_framework import status
-from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-
-
+from .serializers import FileSerializer
 from .forms import UploadFileForm
 from .models import File
 from django.contrib.auth.models import User
@@ -20,6 +18,21 @@ def file(request, name, revision):
         return save_new_file(name, request, revision)
     if request.method == 'PUT':
         return update_file(name, request, revision)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def files_list(request):
+    try:
+        documents = File.objects.filter(owner=request.user.id)
+    except File.DoesNotExist:
+        documents = None
+
+    if documents is None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = FileSerializer(documents, many=True)
+    return Response(serializer.data)
 
 
 def update_file(name, request, revision):
@@ -37,6 +50,7 @@ def update_file(name, request, revision):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         file_record.blob = request.FILES.get('file_uploaded')
         file_record.save()
+        return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -62,7 +76,7 @@ def save_new_file(name, request, revision):
             revision=revision,
             owner=user)
         instance.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_201_CREATED)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
