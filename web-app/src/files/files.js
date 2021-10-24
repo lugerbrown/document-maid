@@ -25,8 +25,7 @@ export class Files {
     {      
       if(data.length > 0){
           data.sort((a, b) => parseFloat(a.revision) - parseFloat(b.revision));
-          const currentRevision  = data[data.length-1];
-          console.log('currentRevision',currentRevision.revision);
+          const currentRevision  = data[data.length-1];          
           revision = ++currentRevision.revision;
       }
 
@@ -39,9 +38,9 @@ export class Files {
     });    
   }
 
-   clearFiles() {
-        document.getElementById("file").value = "";
-    }
+  clearFiles() {
+    document.getElementById("file").value = "";
+  }
   
   canActivate(params, routeConfig, navigationInstructions){    
     const token = window.sessionStorage.getItem('userToken');
