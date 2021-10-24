@@ -23,6 +23,23 @@ export class Documents {
     return promise;
   }
 
+  getDocumentRevisions(name){
+    var promise = new Promise((resolve, reject) => {
+      this.http.fetch(`${serviceRoot}/${name}`)
+      .then(response => response.json())
+      .then(data => {             
+          resolve(data); 
+      })
+      .catch(error => {          
+          reject(error);
+      });
+
+    });
+    return promise;
+  }
+
+  
+
   saveNewDocument(file, name, revision) {    
     var formData = new FormData();        
     formData.append(`file_uploaded`, file);

@@ -1,25 +1,42 @@
 import {inject} from 'aurelia-framework'
 import { Documents } from '../services/documents';
 
-@inject(Documents)
+@inject(Documents, "apiEndPoint")
 export class Files {
-  constructor(documentService){
+  constructor(documentService, apiEndPoint){
     this.documentService = documentService;
-    
-    this.documentService.getUserDocuments().then(documents =>{
-      this.documents = documents;
-      this.documents.forEach(element => {
-        //TODO: to move this value to a config file. and inject.
-        element.downloadUrl = `http://localhost:8000/documents/${element.name}/${element.revision}`
-      });
-    });
-
+    this.apiEndPoint = apiEndPoint;
+    this.getDocumentList(apiEndPoint);
   }
 
-  doUpload(){
-    console.log('uploading file', this.selectedFiles[0].name);
-    this.documentService.saveNewDocument(this.selectedFiles[0], this.selectedFiles[0].name, 1)
-    .then(() => this.clearFiles());
+  getDocumentList() {
+    this.documentService.getUserDocuments().then(documents => {
+      this.documents = documents;
+      this.documents.forEach(element => {
+        element.downloadUrl = `${this.apiEndPoint}/documents/${element.name}/${element.revision}`;
+      });
+    });
+  }
+
+  doUpload(){    
+    let revision = 1;
+    const fileName = this.selectedFiles[0].name;
+    this.documentService.getDocumentRevisions(fileName).then(data => 
+    {      
+      if(data.length > 0){
+          data.sort((a, b) => parseFloat(a.revision) - parseFloat(b.revision));
+          const currentRevision  = data[data.length-1];
+          console.log('currentRevision',currentRevision.revision);
+          revision = ++currentRevision.revision;
+      }
+
+      this.documentService.saveNewDocument(this.selectedFiles[0], fileName, revision)
+        .then(() => {
+          this.clearFiles();
+          this.getDocumentList();
+        }
+      );
+    });    
   }
 
    clearFiles() {
