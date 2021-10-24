@@ -8,17 +8,38 @@
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="Username" value.bind="username"/>
+      <input type="email" class="${validUser ? 'form-control' : 'form-control is-invalid'}" id="floatingInput" placeholder="Username" value.bind="username" />
+      <div class="invalid-feedback">Please provide a username.</div>
       <label for="floatingInput">Username</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" value.bind="password"/>
+      <input type="password" class="${validPassword ? 'form-control' : 'form-control is-invalid'}" id="floatingPassword" placeholder="Password" value.bind="password"/>
+      <div class="invalid-feedback">Please provide a password</div>
       <label for="floatingPassword">Password</label>
     </div>
-
+  
     <button class="w-100 btn btn-lg btn-primary" click.trigger="makeLogin()">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
 
   </main>
+
+  <!-- Toast -->
+<div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement" data-original-class="toast-container position-absolute p-3">
+  <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-bs-autohide="false">
+    <div class="toast-header">
+      
+      <strong class="me-auto">DocumentMaid</strong>
+      <small>Log in failed</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      UserName or Password provided are not correct.
+    </div>
+  </div>
 </div>
+
+
+
+</div>
+
 </template>
