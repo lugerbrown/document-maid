@@ -10,7 +10,7 @@ export class Files {
   }
 
   getDocumentList() {
-    this.documentService.getUserDocuments().then(documents => {
+    return this.documentService.getUserDocuments().then(documents => {
       this.documents = documents;
       this.documents.forEach(element => {
         element.downloadUrl = `${this.apiEndPoint}/documents/${element.name}/${element.revision}`;
@@ -32,7 +32,13 @@ export class Files {
       this.documentService.saveNewDocument(this.selectedFiles[0], fileName, revision)
         .then(() => {
           this.clearFiles();
-          this.getDocumentList();
+          this.getDocumentList().then(()=>{
+            this.toastMessage = {
+              message: `File ${fileName} Saved Successfully`,
+              title:"File uploaded",
+              show:true
+            };    
+          });
         }
       );
     });    

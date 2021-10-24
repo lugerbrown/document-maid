@@ -1,7 +1,6 @@
 import {inject} from 'aurelia-framework'
 import {Router} from 'aurelia-router';
 import {UserAuthentication} from '../services/userAuthentication'
-import {Toast} from 'bootstrap';
 
 @inject(Router, UserAuthentication, 'tokenKeyName')
 export class Login {
@@ -15,8 +14,7 @@ export class Login {
     this.username = '';
   }
     
-  makeLogin() {
-    
+  makeLogin() {    
     this.validPassword = this.password.length > 0;
     this.validUser = this.username.length > 0;
 
@@ -37,12 +35,11 @@ export class Login {
     this.validPassword = false;
     this.validUser = false;
 
-    //adding "fade show" along with the toast class  in html will show them too.
-    Array.from(document.querySelectorAll('.toast'))
-    .forEach(toastNode => {
-      var toast = new Toast(toastNode);
-      toast.show();
-    });    
+    this.toastMessage = {
+      message: "UserName or Password provided are not correct.",
+      title:"Log in failed",
+      show:true
+    };    
   }
 
   setTokenInSession(token) {
