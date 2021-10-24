@@ -9,7 +9,7 @@ from .models import File
 from django.contrib.auth.models import User
 
 
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def file(request, name, revision):
     if request.method == 'GET':
@@ -20,7 +20,7 @@ def file(request, name, revision):
 
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def files_revisions(request, name):
+def single_file_handler(request, name):
     if request.method == 'GET':
         return get_file_revisions(name, request)
     if request.method == 'DELETE':
