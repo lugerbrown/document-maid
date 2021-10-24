@@ -255,7 +255,8 @@ module.exports = ({ production } = {}, {extractCss, analyze, tests, hmr, port, h
     })),
     ...when(!tests, new CopyWebpackPlugin({
       patterns: [
-        { from: 'static', to: outDir, globOptions: { ignore: ['.*'] } }
+        { from: 'static', to: outDir, globOptions: { ignore: ['.*'] } },
+        { from: 'config/config.json', to: `${outDir}/config/config.json`, globOptions: { ignore: ['.*'] } }
       ]
     })), // ignore dot (hidden) files
     ...when(analyze, new BundleAnalyzerPlugin()),

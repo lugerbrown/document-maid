@@ -1,0 +1,9 @@
+{
+  "name": "DocumentMaid WebUI",
+  "version": "1.0",
+  "userTokenKeyName": "userToken",
+  "api": {
+    "key": "document-api",
+    "endpoint": "http://localhost:8000/"
+  }
+}
