@@ -1,4 +1,4 @@
-import '../style/app.scss'
+
 export class App {
     constructor() {      
     }

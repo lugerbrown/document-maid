@@ -18,17 +18,37 @@ def file(request, name, revision):
         return save_new_file(name, request, revision)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def files_revisions(request, name):
+    if request.method == 'GET':
+        return get_file_revisions(name, request)
+    if request.method == 'DELETE':
+        return delete_file(name, request)
+
+
+def delete_file(id, request):
+    try:
+        user = User.objects.get(id=request.user.id)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    try:
+        file_record: File = File.objects.get(owner=request.user.id, id=id)
+    except File.DoesNotExist:
+        file_record = None
+    if file_record is None:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    file_record.delete()
+    return Response(status=status.HTTP_202_ACCEPTED)
+
+
+def get_file_revisions(name, request):
     try:
         documents = File.objects.filter(owner=request.user.id, name=name)
     except File.DoesNotExist:
         documents = None
-
     if documents is None:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
     serializer = FileSerializer(documents, many=True)
     return Response(serializer.data)
 

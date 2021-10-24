@@ -38,7 +38,18 @@ export class Documents {
     return promise;
   }
 
-  
+  deleteDocumentById(id){
+    var promise = new Promise((resolve, reject) => {
+      this.http.fetch(`${serviceRoot}/${id}`,{
+        method: "DELETE",        
+      })
+      .then(response => resolve(response))
+      .catch(error => {
+            reject(error);
+      });
+    });
+    return promise;
+  }
 
   saveNewDocument(file, name, revision) {    
     var formData = new FormData();        

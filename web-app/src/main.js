@@ -4,6 +4,7 @@ import {HttpClient} from 'aurelia-fetch-client';
 import * as environment from '../config/environment.json';
 import {PLATFORM} from 'aurelia-pal';
 import { UserAuthentication } from './services/userAuthentication';
+import '../style/app.scss'
 
 export function configure(aurelia) {
   aurelia.use

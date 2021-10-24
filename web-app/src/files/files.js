@@ -32,7 +32,7 @@ export class Files {
       this.documentService.saveNewDocument(this.selectedFiles[0], fileName, revision)
         .then(() => {
           this.clearFiles();
-          this.getDocumentList().then(()=>{            
+          this.getDocumentList().then(() => {            
             this.toastMessage = {
               message: `File ${fileName} Saved Successfully`,
               title:"File uploaded",
@@ -46,6 +46,20 @@ export class Files {
 
   clearFiles() {
     document.getElementById("file").value = "";
+  }
+
+  deleteFile(id, fileName){
+    this.documentService.deleteDocumentById(id).then(() =>{
+
+      this.getDocumentList().then(() => {
+        this.toastMessage = {
+          message: `File ${fileName} Deleted Successfully`,
+          title:"File Removed",
+          show:true
+        };    
+      });
+            
+    });
   }
   
   canActivate(params, routeConfig, navigationInstructions){    
