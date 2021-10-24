@@ -9,15 +9,28 @@ from .models import File
 from django.contrib.auth.models import User
 
 
-@api_view(['GET', 'POST', 'PUT'])
+@api_view(['GET', 'POST', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def file(request, name, revision):
     if request.method == 'GET':
         return retrieve_file(name, request, revision)
     if request.method == 'POST':
         return save_new_file(name, request, revision)
-    if request.method == 'PUT':
-        return update_file(name, request, revision)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def files_revisions(request, name):
+    try:
+        documents = File.objects.filter(owner=request.user.id, name=name)
+    except File.DoesNotExist:
+        documents = None
+
+    if documents is None:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = FileSerializer(documents, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -33,26 +46,6 @@ def files_list(request):
 
     serializer = FileSerializer(documents, many=True)
     return Response(serializer.data)
-
-
-def update_file(name, request, revision):
-    form = UploadFileForm(request.POST, request.FILES)
-    if form.is_valid():
-        try:
-            user = User.objects.get(id=request.user.id)
-        except User.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        try:
-            file_record: File = File.objects.get(owner=request.user.id, name=name, revision=revision)
-        except File.DoesNotExist:
-            file_record = None
-        if file_record is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        file_record.blob = request.FILES.get('file_uploaded')
-        file_record.save()
-        return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def save_new_file(name, request, revision):
