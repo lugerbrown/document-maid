@@ -37,7 +37,7 @@ cd rest_api
 python manage.py test
 ```
 
-you should see the output in the console like this.
+you should see the output in the console something like this.
 
 ```
 Creating test database for alias 'default'...
@@ -66,6 +66,7 @@ once packages are installed we can start the web server with
 ```
 npm start
 ```
+
 the application will be active in 
 http://localhost:8080
 
@@ -74,6 +75,16 @@ to execute the web-app unittests you need to run
 
 ```
 npm test
+```
+after test execution you should see something like this if all tests pass
+
+```
+Test Suites: 1 skipped, 4 passed, 4 of 5 total
+Tests:       1 skipped, 6 passed, 7 total
+Snapshots:   0 total
+Time:        6.388 s
+Ran all test suites.
+Finished '_default'
 ```
 
 [01]:https://docs.python.org/3/library/venv.html
