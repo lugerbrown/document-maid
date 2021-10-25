@@ -3,7 +3,7 @@ import {UserAuthentication} from '../../src/services/userAuthentication'
   export class MockHttpClient {
     fetchExecuted = false;
     configureExecuted = false;
-    jsonResponse = {auth_token:'TESTTOKEN'}
+    jsonResponse = {auth_token:'TESTTOKEN'};
     fetchResponse = {
       json:() => {
         return this.jsonResponse;
