@@ -66,9 +66,15 @@ once packages are installed we can start the web server with
 ```
 npm start
 ```
-
 the application will be active in 
 http://localhost:8080
+
+
+to execute the web-app unittests you need to run 
+
+```
+npm test
+```
 
 [01]:https://docs.python.org/3/library/venv.html
 [10]:https://aurelia.io/

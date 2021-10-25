@@ -1,8 +1,8 @@
 import { Toast as BsToast } from 'bootstrap'
 export class Toast {
-  constructor(){    
+  constructor(){      
   }
-  activate(bindingContext){    
+  activate(bindingContext){        
     this.item = bindingContext;    
     if(typeof(this.item) !== 'undefined' && this.item.show) {
       Array.from(document.querySelectorAll('.toast'))
