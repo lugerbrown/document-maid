@@ -15,7 +15,7 @@ export class UserAuthentication {
           body:json({'username':username, 'password':password})
         })
         .then(response => response.json())
-        .then(tokenObject => {          
+        .then(tokenObject => {               
           this.setClientHeader(tokenObject.auth_token);
           resolve(tokenObject.auth_token);
         })

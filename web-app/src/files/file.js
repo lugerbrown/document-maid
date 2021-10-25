@@ -1,6 +1,5 @@
 export class File {
-  activate(bindingContext){
-    console.log(bindingContext);
+  activate(bindingContext){    
     this.item = bindingContext;
   }
 }
