@@ -12,7 +12,7 @@ describe('Login Screen', () => {
       .inView('<compose view-model="../../src/login/login"></compose>');
   });
   
-   fit('should render form', done => {
+   it('should render form', done => {
     component.manuallyHandleLifecycle().create(bootstrap)
     .then(() => component.bind())
     .then(() => component.attached())
@@ -25,6 +25,26 @@ describe('Login Screen', () => {
     })
     .then(done)
     .catch(e => { console.log(e.toString()) });
+  });
+
+  it('should validate user input when no user and password provided', done =>{
+   component.manuallyHandleLifecycle().create(bootstrap)
+    .then(() => component.bind())
+    .then(() => component.attached())
+    .then(() => component.bind())
+    .then(() => {                  
+      const buttonElement = document.querySelector('button');
+      buttonElement.click();            
+    })
+    .then(() => component.bind())
+    .then(() => {            
+      const nameElement = document.querySelector('#floatingInput.is-invalid');      
+      expect(nameElement.getAttribute("placeholder")).toBe('Username');
+      const passwordElement = document.querySelector('#floatingPassword.is-invalid');      
+      expect(passwordElement.getAttribute("placeholder")).toBe('Password');
+    })
+    .then(done)
+    .catch(e => { console.log(e.toString()) }); 
   });
    
   afterEach(() => {

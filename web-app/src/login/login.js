@@ -14,7 +14,7 @@ export class Login {
     this.username = '';
   }
     
-  makeLogin() {    
+  makeLogin() {        
     this.validPassword = this.password.length > 0;
     this.validUser = this.username.length > 0;
 

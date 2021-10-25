@@ -14,6 +14,7 @@ describe('Stage App Component', () => {
 
   afterEach(() => component.dispose());
 
+
   xit('should render message', done => {
     component.create(bootstrap).then(() => {
       const view = component.element;
