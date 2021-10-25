@@ -6,19 +6,21 @@
     <img class="mb-4" src="/images/maid_logo.png" alt="" height="161" />
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
-      <input type="email" class="${validUser ? 'form-control' : 'form-control is-invalid'}" id="floatingInput" placeholder="Username" value.bind="username" />
-      <div class="invalid-feedback">Please provide a username.</div>
-      <label for="floatingInput">Username</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="${validPassword ? 'form-control' : 'form-control is-invalid'}" id="floatingPassword" placeholder="Password" value.bind="password"/>
-      <div class="invalid-feedback">Please provide a password</div>
-      <label for="floatingPassword">Password</label>
-    </div>
-  
-    <button class="w-100 btn btn-lg btn-primary" click.trigger="makeLogin()">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    <form submit.delegate="makeLogin()">
+      <div class="form-floating">
+        <input type="email" class="${validUser ? 'form-control' : 'form-control is-invalid'}" id="floatingInput" placeholder="Username" value.bind="username" />
+        <div class="invalid-feedback">Please provide a username.</div>
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="${validPassword ? 'form-control' : 'form-control is-invalid'}" id="floatingPassword" placeholder="Password" value.bind="password"/>
+        <div class="invalid-feedback">Please provide a password</div>
+        <label for="floatingPassword">Password</label>
+      </div>
+    
+      <button class="w-100 btn btn-lg btn-primary" click.trigger="makeLogin()">Sign in</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    </form>
 
     <compose model.bind="toastMessage" view-model="components/toast/toast"></compose>
   </main>
