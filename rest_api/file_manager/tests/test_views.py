@@ -83,3 +83,12 @@ class TestViews(TestCase):
             response = self.rest_client.post(reverse('file', kwargs={'name': 'testfile.txt', 'revision': 1}),
                                   {'file_uploaded': fp})
             self.assertEqual(response.status_code, 201)
+
+    def test_user_can_delete_file(self):
+        # Arrange
+        token = self.get_token_from_logged_test_user()
+        self.rest_client.credentials(HTTP_AUTHORIZATION='token ' + token)
+        file_id = self.documents[0].id
+        # Act
+        response = self.rest_client.delete(reverse('single_file_handler', kwargs={'name': file_id}))
+        self.assertEqual(response.status_code, 202)
