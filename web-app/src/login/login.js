@@ -16,11 +16,10 @@ export class Login {
     
   makeLogin() {        
     this.validPassword = this.password.length > 0;
-    this.validUser = this.username.length > 0;
-
-    if(this.validPassword && this.validUser){
+    this.validUser = this.username.length > 0;    
+    if(this.validPassword && this.validUser){      
       this.userService.getToken(this.username, this.password)
-      .then(token => {        
+      .then(token => {           
         this.setTokenInSession(token);        
         this.router.navigate('files');
       }).catch(() => {
