@@ -1,0 +1,15 @@
+<template>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">${document.name}</div>
+        
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" click.trigger="deleteFile(document.id, document.name)" class="btn btn-link">Delete
+                File</button>
+              <a href.bind="document.downloadUrl" class="delete-link" target="_blank">Download file</a>
+            </div>
+        
+          </div>
+          <span class="badge bg-primary rounded-pill">Rev.${document.revision}</span>
+        </li>
+</template>
