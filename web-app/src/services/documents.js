@@ -56,7 +56,6 @@ export class Documents {
     formData.append(`file_uploaded`, file);
     
     var promise = new Promise((resolve, reject) => {
-
       this.http.fetch(`${serviceRoot}/${name}/${revision}`,{
         method: "POST",
         body:formData
